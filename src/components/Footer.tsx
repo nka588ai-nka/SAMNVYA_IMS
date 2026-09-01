@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Building2, Phone, Mail, MapPin, Globe, 
   ShieldCheck, Sparkles, ArrowRight, Heart
 } from 'lucide-react';
+
+const BRIGHT_BRAND_COLORS = [
+  '#FFFFFF', // Bright Crisp White
+  '#FFD700', // Electric Gold
+  '#00F5FF', // Neon Cyan
+  '#39FF14', // Luminous Lime / Emerald
+  '#FF6080', // Vivid Coral / Bright Rose
+  '#FFA500', // Vibrant Amber Orange
+  '#C084FC', // Electric Purple
+  '#38BDF8', // Bright Radiant Azure
+];
 
 interface FooterProps {
   onOpenLeadModal: (type?: 'demo' | 'quotation' | 'consultation' | 'brochure', defaultSolution?: string) => void;
@@ -10,6 +21,16 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolution }) => {
+  const [brandColorIndex, setBrandColorIndex] = useState(0);
+
+  // Dynamic bright color changer every 2 seconds for SAMNVYA
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setBrandColorIndex((prev) => (prev + 1) % BRIGHT_BRAND_COLORS.length);
+    }, 2000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <footer className="bg-[#040814]/90 backdrop-blur-2xl text-gray-300 text-xs border-t border-white/10 relative">
       
@@ -52,12 +73,23 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolutio
               <img 
                 src="/samnvya-logo.png" 
                 alt="SAMNVYA IMS Logo" 
-                className="w-12 h-12 object-contain rounded-2xl bg-white/5 border border-white/10 p-1" 
+                className="w-14 h-14 object-contain shrink-0" 
               />
-              <div className="flex flex-col">
-                <span className="font-black text-lg text-white tracking-tighter uppercase font-display">SAMNVYA IMS</span>
-                <span className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">
-                  The Information Management System
+              <div className="flex flex-col justify-center select-none">
+                <span 
+                  className="font-black text-2xl text-white tracking-tight uppercase font-display leading-none transition-colors duration-700"
+                  style={{ 
+                    color: BRIGHT_BRAND_COLORS[brandColorIndex],
+                    textShadow: `0 0 16px ${BRIGHT_BRAND_COLORS[brandColorIndex]}55`
+                  }}
+                >
+                  SAMNVYA
+                </span>
+                <span className="text-[9px] font-bold text-gray-200 font-mono uppercase tracking-[0.14em] mt-1 leading-tight whitespace-nowrap">
+                  THE INFORMATION MANAGEMENT SYSTEM
+                </span>
+                <span className="text-[11px] font-bold text-[#FFD000] tracking-[0.02em] font-sans mt-0.5 leading-tight whitespace-nowrap">
+                  Samnvya IMS Private Limited
                 </span>
               </div>
             </div>
@@ -68,28 +100,28 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolutio
 
             <div className="space-y-2 pt-2 text-gray-300">
               <div className="flex items-start">
-                <MapPin className="w-3.5 h-3.5 text-[#F27D26] mr-2.5 shrink-0 mt-0.5" />
+                <MapPin className="w-3.5 h-3.5 text-[#FFD000] mr-2.5 shrink-0 mt-0.5" />
                 <span className="text-[11px]">171/251, Pratap Nagar, Jaipur, Rajasthan – 302033</span>
               </div>
               <div className="flex items-center">
-                <Phone className="w-3.5 h-3.5 text-[#F27D26] mr-2.5 shrink-0" />
-                <a href="tel:+919509386565" className="hover:text-white transition-colors font-mono font-bold">
+                <Phone className="w-3.5 h-3.5 text-[#FFD000] mr-2.5 shrink-0" />
+                <a href="tel:+919509386565" className="hover:text-[#FFD000] transition-colors font-mono font-bold">
                   +91-9509386565
                 </a>
               </div>
               <div className="flex items-center">
-                <Mail className="w-3.5 h-3.5 text-[#F27D26] mr-2.5 shrink-0" />
-                <a href="mailto:samnvya.ims@gmail.com" className="hover:text-white transition-colors font-mono font-bold">
+                <Mail className="w-3.5 h-3.5 text-[#FFD000] mr-2.5 shrink-0" />
+                <a href="mailto:samnvya.ims@gmail.com" className="hover:text-[#FFD000] transition-colors font-mono font-bold">
                   samnvya.ims@gmail.com
                 </a>
               </div>
             </div>
           </div>
 
-          {/* Official Websites in Order */}
+          {/* Official Websites */}
           <div className="space-y-3.5">
             <h5 className="text-xs font-black text-white uppercase tracking-widest font-mono flex items-center">
-              <Globe className="w-3.5 h-3.5 mr-1.5 text-[#F27D26]" />
+              <Globe className="w-3.5 h-3.5 mr-1.5 text-[#FFD000]" />
               Official Web Portals
             </h5>
             <div className="space-y-2.5 text-xs">
@@ -97,11 +129,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolutio
                 href="https://online.samnvya.com/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="block p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-cyan-500/30 transition-all group"
+                className="block p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-amber-400/30 transition-all group"
               >
-                <div className="flex items-center justify-between text-[11px] font-bold text-white group-hover:text-cyan-300">
-                  <span>1. Online ERP Portal</span>
-                  <ArrowRight className="w-3 h-3 text-gray-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all" />
+                <div className="flex items-center justify-between text-[11px] font-bold text-white group-hover:text-amber-300">
+                  <span>Samnvya Online ERP</span>
+                  <ArrowRight className="w-3 h-3 text-gray-500 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-all" />
                 </div>
                 <span className="text-[10px] text-gray-400 font-mono block">online.samnvya.com</span>
               </a>
@@ -110,10 +142,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolutio
                 href="https://thekhyati.com/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="block p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-violet-500/30 transition-all group"
+                className="block p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-violet-500/30 transition-all group"
               >
                 <div className="flex items-center justify-between text-[11px] font-bold text-white group-hover:text-violet-300">
-                  <span>2. The Khyati Network</span>
+                  <span>The Khyati Platform</span>
                   <ArrowRight className="w-3 h-3 text-gray-500 group-hover:text-violet-400 group-hover:translate-x-0.5 transition-all" />
                 </div>
                 <span className="text-[10px] text-gray-400 font-mono block">thekhyati.com</span>
@@ -123,11 +155,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolutio
                 href="https://samnvya.com/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="block p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-[#F27D26]/30 transition-all group"
+                className="block p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-amber-400/30 transition-all group"
               >
-                <div className="flex items-center justify-between text-[11px] font-bold text-white group-hover:text-[#F27D26]">
-                  <span>3. Samnvya Corporate HQ</span>
-                  <ArrowRight className="w-3 h-3 text-gray-500 group-hover:text-[#F27D26] group-hover:translate-x-0.5 transition-all" />
+                <div className="flex items-center justify-between text-[11px] font-bold text-white group-hover:text-[#FFD000]">
+                  <span>SAMNVYA Corporate HQ</span>
+                  <ArrowRight className="w-3 h-3 text-gray-500 group-hover:text-[#FFD000] group-hover:translate-x-0.5 transition-all" />
                 </div>
                 <span className="text-[10px] text-gray-400 font-mono block">samnvya.com</span>
               </a>
@@ -136,10 +168,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolutio
                 href="https://samnvya.com/test/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="block p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-emerald-500/30 transition-all group"
+                className="block p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-emerald-500/30 transition-all group"
               >
                 <div className="flex items-center justify-between text-[11px] font-bold text-white group-hover:text-emerald-300">
-                  <span>4. Testing & Sandbox</span>
+                  <span>Testing & Sandbox</span>
                   <ArrowRight className="w-3 h-3 text-gray-500 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all" />
                 </div>
                 <span className="text-[10px] text-gray-400 font-mono block">samnvya.com/test/</span>
