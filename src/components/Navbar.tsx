@@ -170,42 +170,76 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
       <nav 
         className={`w-full transition-all duration-200 border-b ${
           isScrolled 
-            ? 'bg-[#040916]/95 backdrop-blur-xl border-amber-500/20 py-2.5 shadow-2xl shadow-black/80' 
-            : 'bg-[#040817]/90 backdrop-blur-md border-white/10 py-3.5'
+            ? 'bg-[#040916]/95 backdrop-blur-xl border-amber-500/20 py-2 shadow-2xl shadow-black/80' 
+            : 'bg-[#040817]/90 backdrop-blur-md border-white/10 py-2.5'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2">
-          {/* Logo & Brand Identity (No box behind logo, SAMNVYA large with dynamic 2s color rotation, then THE INFORMATION MANAGEMENT SYSTEM, then Samnvya IMS Private Limited) */}
-          <a href="#home" className="flex items-center space-x-3.5 group shrink-0" id="navbar-brand-logo">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+          {/* Logo & Brand Identity (No box behind logo, SAMNVYA large with dynamic 2s color rotation, then THE INFORMATION MANAGEMENT SYSTEM, then Samnvya IMS Private Limited - exactly aligned from start to end) */}
+          <a href="#home" className="flex items-center space-x-3 group shrink-0" id="navbar-brand-logo">
             <img 
               src="/samnvya-logo.png" 
               alt="SAMNVYA IMS Logo" 
-              className="w-14 h-14 sm:w-16 sm:h-16 lg:w-18 lg:h-18 object-contain group-hover:scale-105 transition-transform shrink-0" 
+              className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 object-contain group-hover:scale-105 transition-transform shrink-0" 
             />
-            <div className="flex flex-col justify-center select-none">
-              <span 
-                className="font-black text-2xl sm:text-3xl lg:text-3xl tracking-tight uppercase font-display leading-none transition-colors duration-700"
-                style={{ 
-                  color: BRIGHT_BRAND_COLORS[brandColorIndex],
-                  textShadow: `0 0 16px ${BRIGHT_BRAND_COLORS[brandColorIndex]}55`
-                }}
+            <div className="flex flex-col justify-center select-none shrink-0">
+              <svg 
+                viewBox="0 0 170 48" 
+                className="w-[165px] sm:w-[185px] lg:w-[205px] h-auto overflow-visible"
+                aria-label="SAMNVYA - The Information Management System - Samnvya IMS Private Limited"
               >
-                SAMNVYA
-              </span>
-              <span className="text-[8.5px] sm:text-[9.5px] font-bold text-gray-200 tracking-[0.14em] uppercase font-mono mt-1 leading-tight whitespace-nowrap">
-                THE INFORMATION MANAGEMENT SYSTEM
-              </span>
-              <span className="text-[10px] sm:text-[11px] font-bold text-[#FFD000] tracking-[0.02em] font-sans mt-0.5 leading-tight whitespace-nowrap">
-                Samnvya IMS Private Limited
-              </span>
+                {/* Line 1: SAMNVYA Large with 2s rotating bright color */}
+                <text
+                  x="0"
+                  y="23"
+                  textLength="170"
+                  lengthAdjust="spacing"
+                  fontSize="26"
+                  fontWeight="900"
+                  fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                  fill={BRIGHT_BRAND_COLORS[brandColorIndex]}
+                  style={{
+                    transition: 'fill 0.7s ease',
+                    filter: `drop-shadow(0 0 10px ${BRIGHT_BRAND_COLORS[brandColorIndex]}66)`
+                  }}
+                >
+                  SAMNVYA
+                </text>
+                {/* Line 2: THE INFORMATION MANAGEMENT SYSTEM - Exactly flush with S and A */}
+                <text
+                  x="0"
+                  y="35"
+                  textLength="170"
+                  lengthAdjust="spacing"
+                  fontSize="8"
+                  fontWeight="600"
+                  fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                  fill="#E2E8F0"
+                >
+                  THE INFORMATION MANAGEMENT SYSTEM
+                </text>
+                {/* Line 3: Samnvya IMS Private Limited - Exactly flush with S and A */}
+                <text
+                  x="0"
+                  y="47"
+                  textLength="170"
+                  lengthAdjust="spacing"
+                  fontSize="9.8"
+                  fontWeight="700"
+                  fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                  fill="#FFD000"
+                >
+                  Samnvya IMS Private Limited
+                </text>
+              </svg>
             </div>
           </a>
 
-          {/* Desktop Navigation Links - Golden Shining Button Style */}
-          <div className="hidden xl:flex items-center space-x-1.5 flex-wrap">
+          {/* Desktop Navigation Links - Sleek, single-line Golden Nav Items without crowding */}
+          <div className="hidden xl:flex items-center space-x-1.5 flex-nowrap shrink-0">
             <a 
               href="#home" 
-              className={`px-3 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all ${
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
                 activeSection === 'home' 
                   ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
                   : 'golden-shimmer-btn'
@@ -223,7 +257,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
             >
               <a 
                 href="#solutions" 
-                className={`px-3 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all inline-flex items-center ${
+                className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all inline-flex items-center whitespace-nowrap ${
                   activeSection === 'solutions' 
                     ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
                     : 'golden-shimmer-btn'
@@ -284,7 +318,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
             >
               <a 
                 href="#industries" 
-                className={`px-3 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all inline-flex items-center ${
+                className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all inline-flex items-center whitespace-nowrap ${
                   activeSection === 'industries' 
                     ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
                     : 'golden-shimmer-btn'
@@ -319,7 +353,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
 
             <a 
               href="#case-studies" 
-              className={`px-2.5 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all ${
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
                 activeSection === 'case-studies' 
                   ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
                   : 'golden-shimmer-btn'
@@ -331,7 +365,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
 
             <a 
               href="#recommender" 
-              className={`px-3 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all ${
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
                 activeSection === 'recommender' 
                   ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
                   : 'golden-shimmer-btn'
@@ -343,7 +377,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
 
             <a 
               href="#calculator" 
-              className={`px-2.5 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all ${
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
                 activeSection === 'calculator' 
                   ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
                   : 'golden-shimmer-btn'
@@ -355,7 +389,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
 
             <a 
               href="#b2g" 
-              className={`px-3 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all ${
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
                 activeSection === 'b2g' 
                   ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
                   : 'golden-shimmer-btn'
@@ -367,7 +401,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
 
             <a 
               href="#resources" 
-              className={`px-2.5 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all ${
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
                 activeSection === 'resources' 
                   ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
                   : 'golden-shimmer-btn'
@@ -379,7 +413,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
 
             <a 
               href="#about" 
-              className={`px-3 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all ${
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
                 activeSection === 'about' 
                   ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
                   : 'golden-shimmer-btn'
@@ -391,7 +425,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
 
             <a 
               href="#contact" 
-              className={`px-3 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all ${
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
                 activeSection === 'contact' 
                   ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
                   : 'golden-shimmer-btn'
@@ -408,7 +442,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
               onMouseLeave={() => setPortalsDropdownOpen(false)}
             >
               <button
-                className="px-3 py-1.5 text-[11px] uppercase tracking-wider font-black rounded-lg inline-flex items-center golden-shimmer-btn transition-all"
+                className="px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg inline-flex items-center golden-shimmer-btn transition-all whitespace-nowrap"
                 id="navlink-official-portals"
               >
                 <Globe className="w-3.5 h-3.5 mr-1 text-[#061638]" />

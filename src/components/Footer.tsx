@@ -75,22 +75,56 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolutio
                 alt="SAMNVYA IMS Logo" 
                 className="w-14 h-14 object-contain shrink-0" 
               />
-              <div className="flex flex-col justify-center select-none">
-                <span 
-                  className="font-black text-2xl text-white tracking-tight uppercase font-display leading-none transition-colors duration-700"
-                  style={{ 
-                    color: BRIGHT_BRAND_COLORS[brandColorIndex],
-                    textShadow: `0 0 16px ${BRIGHT_BRAND_COLORS[brandColorIndex]}55`
-                  }}
+              <div className="flex flex-col justify-center select-none shrink-0">
+                <svg 
+                  viewBox="0 0 170 48" 
+                  className="w-[175px] sm:w-[195px] h-auto overflow-visible"
+                  aria-label="SAMNVYA - The Information Management System - Samnvya IMS Private Limited"
                 >
-                  SAMNVYA
-                </span>
-                <span className="text-[9px] font-bold text-gray-200 font-mono uppercase tracking-[0.14em] mt-1 leading-tight whitespace-nowrap">
-                  THE INFORMATION MANAGEMENT SYSTEM
-                </span>
-                <span className="text-[11px] font-bold text-[#FFD000] tracking-[0.02em] font-sans mt-0.5 leading-tight whitespace-nowrap">
-                  Samnvya IMS Private Limited
-                </span>
+                  {/* Line 1: SAMNVYA Large with 2s rotating bright color */}
+                  <text
+                    x="0"
+                    y="23"
+                    textLength="170"
+                    lengthAdjust="spacing"
+                    fontSize="26"
+                    fontWeight="900"
+                    fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    fill={BRIGHT_BRAND_COLORS[brandColorIndex]}
+                    style={{
+                      transition: 'fill 0.7s ease',
+                      filter: `drop-shadow(0 0 10px ${BRIGHT_BRAND_COLORS[brandColorIndex]}66)`
+                    }}
+                  >
+                    SAMNVYA
+                  </text>
+                  {/* Line 2: THE INFORMATION MANAGEMENT SYSTEM - Exactly flush with S and A */}
+                  <text
+                    x="0"
+                    y="35"
+                    textLength="170"
+                    lengthAdjust="spacing"
+                    fontSize="8"
+                    fontWeight="600"
+                    fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    fill="#E2E8F0"
+                  >
+                    THE INFORMATION MANAGEMENT SYSTEM
+                  </text>
+                  {/* Line 3: Samnvya IMS Private Limited - Exactly flush with S and A */}
+                  <text
+                    x="0"
+                    y="47"
+                    textLength="170"
+                    lengthAdjust="spacing"
+                    fontSize="9.8"
+                    fontWeight="700"
+                    fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    fill="#FFD000"
+                  >
+                    Samnvya IMS Private Limited
+                  </text>
+                </svg>
               </div>
             </div>
 
