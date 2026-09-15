@@ -3,6 +3,7 @@ import {
   Building2, Phone, Mail, MapPin, Globe, 
   ShieldCheck, Sparkles, ArrowRight, Heart
 } from 'lucide-react';
+import { PageId } from '../types';
 
 const BRIGHT_BRAND_COLORS = [
   '#FFFFFF', // Bright Crisp White
@@ -18,10 +19,17 @@ const BRIGHT_BRAND_COLORS = [
 interface FooterProps {
   onOpenLeadModal: (type?: 'demo' | 'quotation' | 'consultation' | 'brochure', defaultSolution?: string) => void;
   onSelectSolution: (solutionId: string) => void;
+  onNavigatePage?: (page: PageId) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolution }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolution, onNavigatePage }) => {
   const [brandColorIndex, setBrandColorIndex] = useState(0);
+
+  const handleNav = (page: PageId) => {
+    if (onNavigatePage) {
+      onNavigatePage(page);
+    }
+  };
 
   // Dynamic bright color changer every 2 seconds for SAMNVYA
   useEffect(() => {
@@ -218,34 +226,34 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolutio
             <h5 className="text-xs font-black text-white uppercase tracking-widest font-mono">Solutions</h5>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#solutions" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('solutions')} className="hover:text-[#F27D26] transition-colors text-left">
                   Information Management
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#solutions" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('solutions')} className="hover:text-[#F27D26] transition-colors text-left">
                   Institutional ERP Software
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#solutions" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('solutions')} className="hover:text-[#F27D26] transition-colors text-left">
                   Digital Library & OPAC
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#solutions" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('solutions')} className="hover:text-[#F27D26] transition-colors text-left">
                   Alumni & Community Portal
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#solutions" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('solutions')} className="hover:text-[#F27D26] transition-colors text-left">
                   Smart Visitor Management
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#solutions" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('solutions')} className="hover:text-[#F27D26] transition-colors text-left">
                   Institutional Web AMC
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -255,71 +263,76 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLeadModal, onSelectSolutio
             <h5 className="text-xs font-black text-white uppercase tracking-widest font-mono">Industries Served</h5>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#industries" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('industries')} className="hover:text-[#F27D26] transition-colors text-left">
                   Higher Education & Colleges
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#industries" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('industries')} className="hover:text-[#F27D26] transition-colors text-left">
                   Government & Autonomous
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#industries" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('industries')} className="hover:text-[#F27D26] transition-colors text-left">
                   Enterprises & SMEs
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#industries" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('industries')} className="hover:text-[#F27D26] transition-colors text-left">
                   Religious Shrines & Trusts
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#b2g" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('corporate')} className="hover:text-[#F27D26] transition-colors text-left">
                   Government Procurement (B2G)
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#case-studies" className="hover:text-[#F27D26] transition-colors">
-                  Institutional Case Studies
-                </a>
+                <button onClick={() => handleNav('projects')} className="hover:text-[#F27D26] transition-colors text-left">
+                  Institutional Projects & Deployments
+                </button>
               </li>
             </ul>
           </div>
 
           {/* Interactive Tools & Quick Links */}
           <div className="space-y-3.5">
-            <h5 className="text-xs font-black text-white uppercase tracking-widest font-mono">Tools & Resources</h5>
+            <h5 className="text-xs font-black text-white uppercase tracking-widest font-mono">Company & Pages</h5>
             <ul className="space-y-2 text-xs">
               <li>
-                <a href="#recommender" className="hover:text-[#F27D26] transition-colors">
-                  Solution Finder Wizard
-                </a>
+                <button onClick={() => handleNav('about-us')} className="hover:text-[#F27D26] transition-colors text-left">
+                  About SAMNVYA & Philosophy
+                </button>
               </li>
               <li>
-                <a href="#calculator" className="hover:text-[#F27D26] transition-colors">
-                  ROI & Impact Calculator
-                </a>
+                <button onClick={() => handleNav('corporate')} className="hover:text-[#F27D26] transition-colors text-left">
+                  Corporate & MCA Compliance
+                </button>
               </li>
               <li>
-                <a href="#resources" className="hover:text-[#F27D26] transition-colors">
-                  Brochure Center (PDFs)
-                </a>
+                <button onClick={() => handleNav('business-with-us')} className="hover:text-[#F27D26] transition-colors text-left">
+                  Business With Us & Tenders
+                </button>
               </li>
               <li>
-                <a href="#resources" className="hover:text-[#F27D26] transition-colors">
-                  Ecosystem News & Updates
-                </a>
+                <button onClick={() => handleNav('events-news')} className="hover:text-[#F27D26] transition-colors text-left">
+                  Events & Press Releases
+                </button>
               </li>
               <li>
-                <a href="#about" className="hover:text-[#F27D26] transition-colors">
-                  About SAMNVYA & Jaipur HQ
-                </a>
+                <button onClick={() => handleNav('videos')} className="hover:text-[#F27D26] transition-colors text-left">
+                  Video Demonstrations
+                </button>
               </li>
               <li>
-                <a href="#contact" className="hover:text-[#F27D26] transition-colors">
+                <button onClick={() => handleNav('photos')} className="hover:text-[#F27D26] transition-colors text-left">
+                  Photo Gallery & Field Deployments
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleNav('contact-us')} className="hover:text-[#F27D26] transition-colors text-left">
                   Contact & Support Desk
-                </a>
+                </button>
               </li>
             </ul>
           </div>

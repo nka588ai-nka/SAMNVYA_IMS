@@ -6,12 +6,25 @@ import {
   Building2, GraduationCap, Briefcase, Globe, ExternalLink, TestTube
 } from 'lucide-react';
 import { SOLUTION_CATEGORIES } from '../data/solutionsData';
+import { PageId } from '../types';
 
 interface NavbarProps {
   onOpenLeadModal: (type?: 'demo' | 'quotation' | 'consultation' | 'brochure', defaultSolution?: string) => void;
   onSelectSolution: (solutionId: string) => void;
   activeSection: string;
+  activePage: PageId;
+  onNavigatePage: (page: PageId) => void;
 }
+
+const WEBSITE_PAGES: { id: PageId; label: string }[] = [
+  { id: 'home', label: 'Home' },
+  { id: 'about-us', label: 'About Us' },
+  { id: 'corporate', label: 'Corporate' },
+  { id: 'business-with-us', label: 'Business With Us' },
+  { id: 'videos', label: 'Videos' },
+  { id: 'photos', label: 'Photos' },
+  { id: 'contact-us', label: 'Contact Us' },
+];
 
 const BRIGHT_BRAND_COLORS = [
   '#FFFFFF', // Bright Crisp White
@@ -24,7 +37,13 @@ const BRIGHT_BRAND_COLORS = [
   '#38BDF8', // Bright Radiant Azure
 ];
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolution, activeSection }) => {
+export const Navbar: React.FC<NavbarProps> = ({ 
+  onOpenLeadModal, 
+  onSelectSolution, 
+  activeSection,
+  activePage,
+  onNavigatePage
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [solutionsDropdownOpen, setSolutionsDropdownOpen] = useState(false);
@@ -67,101 +86,45 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
 
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300">
-      {/* Top Corporate Contact & Official Portals Strip */}
-      <div className="bg-[#050b18] text-gray-300 text-[11px] py-2.5 px-4 border-b border-white/10 hidden md:block font-mono">
-        <div className="max-w-7xl mx-auto space-y-2">
-          {/* Contact Details & Vision Row */}
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-5 lg:space-x-7">
-              <a 
-                href="tel:+919509386565" 
-                className="flex items-center text-white hover:text-[#FFD000] font-bold transition-colors"
-                id="topbar-phone-link"
-              >
-                <Phone className="w-3.5 h-3.5 mr-1.5 text-[#FFD000]" />
-                <span>+91-9509386565</span>
-              </a>
-              <a 
-                href="mailto:samnvya.ims@gmail.com" 
-                className="flex items-center text-white hover:text-[#FFD000] font-bold transition-colors"
-                id="topbar-email-link"
-              >
-                <Mail className="w-3.5 h-3.5 mr-1.5 text-[#FFD000]" />
-                <span>samnvya.ims@gmail.com</span>
-              </a>
-              <div className="flex items-center text-gray-300">
-                <MapPin className="w-3.5 h-3.5 mr-1.5 text-[#FFD000]" />
-                <span>Pratap Nagar, Jaipur, Rajasthan</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] uppercase font-black tracking-[0.2em] bg-amber-500/10 text-[#FFD000] border border-amber-400/30 shadow-[0_0_10px_rgba(255,208,0,0.2)]">
-                VISION: “THE DIRECT DIGITAL WORLD”
-              </span>
-              <a
-                href="https://wa.me/919509386565?text=Hello%20Samnvya%20Team%2C%20I%20would%20like%20to%20inquire%20about%20your%20digital%20solutions."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#22c55e] hover:text-white font-black transition-colors flex items-center text-[10px] uppercase tracking-wider"
-                id="topbar-whatsapp-link"
-              >
-                <span className="w-2 h-2 rounded-full bg-[#22c55e] mr-1.5 animate-pulse shadow-[0_0_8px_#22c55e]"></span>
-                WhatsApp Desk
-              </a>
+      {/* Line 1: Top Corporate Contact & Vision Strip */}
+      <div className="bg-[#050b18] text-gray-300 text-[11px] py-2 px-4 sm:px-6 lg:px-8 border-b border-white/10 hidden md:block font-mono">
+        <div className="max-w-[1440px] mx-auto flex justify-between items-center">
+          <div className="flex items-center space-x-5 lg:space-x-7">
+            <a 
+              href="tel:+919509386565" 
+              className="flex items-center text-white hover:text-[#FFD000] font-bold transition-colors"
+              id="topbar-phone-link"
+            >
+              <Phone className="w-3.5 h-3.5 mr-1.5 text-[#FFD000]" />
+              <span>+91-9509386565</span>
+            </a>
+            <a 
+              href="mailto:samnvya.ims@gmail.com" 
+              className="flex items-center text-white hover:text-[#FFD000] font-bold transition-colors"
+              id="topbar-email-link"
+            >
+              <Mail className="w-3.5 h-3.5 mr-1.5 text-[#FFD000]" />
+              <span>samnvya.ims@gmail.com</span>
+            </a>
+            <div className="flex items-center text-gray-300">
+              <MapPin className="w-3.5 h-3.5 mr-1.5 text-[#FFD000]" />
+              <span>Pratap Nagar, Jaipur, Rajasthan</span>
             </div>
           </div>
-
-          {/* Official Websites Link Strip - Center Aligned in Golden Shining Box */}
-          <div className="border-t border-white/10 pt-2 flex flex-col items-center justify-center gap-1.5 text-center">
-            <div className="flex items-center justify-center space-x-1.5 text-[#FFD000] font-black text-[11px]">
-              <Globe className="w-3.5 h-3.5 text-[#FFD000]" />
-              <span className="uppercase tracking-[0.2em] font-mono">OFFICIAL WEBSITES:</span>
-            </div>
-            <div className="flex items-center justify-center flex-wrap gap-2 text-[11px]">
-              <a
-                href="https://online.samnvya.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="golden-shimmer-btn px-3.5 py-1 text-[11px] rounded-lg group shadow-md"
-                title="Samnvya Online Cloud ERP Portal"
-              >
-                <span>https://online.samnvya.com/</span>
-                <ExternalLink className="w-3 h-3 ml-1.5 text-[#061638] group-hover:scale-110 transition-transform" />
-              </a>
-
-              <a
-                href="https://thekhyati.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="golden-shimmer-btn px-3.5 py-1 text-[11px] rounded-lg group shadow-md"
-                title="The Khyati Institutional & Alumni Network"
-              >
-                <span>https://thekhyati.com/</span>
-                <ExternalLink className="w-3 h-3 ml-1.5 text-[#061638] group-hover:scale-110 transition-transform" />
-              </a>
-
-              <a
-                href="https://samnvya.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="golden-shimmer-btn px-3.5 py-1 text-[11px] rounded-lg group shadow-md"
-                title="SAMNVYA IMS Corporate Website"
-              >
-                <span>https://samnvya.com/</span>
-                <ExternalLink className="w-3 h-3 ml-1.5 text-[#061638] group-hover:scale-110 transition-transform" />
-              </a>
-
-              <a
-                href="https://samnvya.com/test/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="golden-shimmer-btn px-3.5 py-1 text-[11px] rounded-lg group shadow-md"
-                title="Samnvya Testing & Sandbox Portal"
-              >
-                <span>https://samnvya.com/test/</span>
-                <ExternalLink className="w-3 h-3 ml-1.5 text-[#061638] group-hover:scale-110 transition-transform" />
-              </a>
-            </div>
+          <div className="flex items-center space-x-4">
+            <span className="inline-flex items-center px-3 py-0.5 rounded-full text-[10px] uppercase font-black tracking-[0.18em] bg-amber-500/10 text-[#FFD000] border border-amber-400/30 shadow-[0_0_10px_rgba(255,208,0,0.2)]">
+              VISION: “THE DIRECT DIGITAL WORLD”
+            </span>
+            <a
+              href="https://wa.me/919509386565?text=Hello%20Samnvya%20Team%2C%20I%20would%20like%20to%20inquire%20about%20your%20digital%20solutions."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#22c55e] hover:text-white font-black transition-colors flex items-center text-[10px] uppercase tracking-wider"
+              id="topbar-whatsapp-link"
+            >
+              <span className="w-2 h-2 rounded-full bg-[#22c55e] mr-1.5 animate-pulse shadow-[0_0_8px_#22c55e]"></span>
+              WhatsApp Desk
+            </a>
           </div>
         </div>
       </div>
@@ -175,8 +138,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
         }`}
       >
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-          {/* Logo & Brand Identity (No box behind logo, SAMNVYA large with dynamic 2s color rotation, then THE INFORMATION MANAGEMENT SYSTEM, then Samnvya IMS Private Limited - exactly aligned from start to end) */}
-          <a href="#home" className="flex items-center space-x-3 group shrink-0" id="navbar-brand-logo">
+          {/* Logo & Brand Identity */}
+          <button 
+            onClick={() => onNavigatePage('home')} 
+            className="flex items-center space-x-3 group shrink-0 text-left focus:outline-none" 
+            id="navbar-brand-logo"
+          >
             <img 
               src="/samnvya-logo.png" 
               alt="SAMNVYA IMS Logo" 
@@ -233,21 +200,57 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
                 </text>
               </svg>
             </div>
-          </a>
+          </button>
 
-          {/* Desktop Navigation Links - Sleek, single-line Golden Nav Items without crowding */}
+          {/* Desktop Navigation Links - Sleek, single-line Golden Nav Items */}
           <div className="hidden xl:flex items-center space-x-1.5 flex-nowrap shrink-0">
-            <a 
-              href="#home" 
+            <button 
+              onClick={() => onNavigatePage('home')} 
               className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
-                activeSection === 'home' 
-                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
+                activePage === 'home' 
+                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
                   : 'golden-shimmer-btn'
               }`}
               id="navlink-home"
             >
               Home
-            </a>
+            </button>
+
+            <button 
+              onClick={() => onNavigatePage('about-us')} 
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
+                activePage === 'about-us' 
+                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
+                  : 'golden-shimmer-btn'
+              }`}
+              id="navlink-about-us"
+            >
+              About Us
+            </button>
+
+            <button 
+              onClick={() => onNavigatePage('corporate')} 
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
+                activePage === 'corporate' 
+                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
+                  : 'golden-shimmer-btn'
+              }`}
+              id="navlink-corporate"
+            >
+              Corporate
+            </button>
+
+            <button 
+              onClick={() => onNavigatePage('business-with-us')} 
+              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
+                activePage === 'business-with-us' 
+                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
+                  : 'golden-shimmer-btn'
+              }`}
+              id="navlink-business-with-us"
+            >
+              Business With Us
+            </button>
 
             {/* Solutions Dropdown */}
             <div 
@@ -255,18 +258,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
               onMouseEnter={() => setSolutionsDropdownOpen(true)}
               onMouseLeave={() => setSolutionsDropdownOpen(false)}
             >
-              <a 
-                href="#solutions" 
+              <button 
+                onClick={() => onNavigatePage('solutions')} 
                 className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all inline-flex items-center whitespace-nowrap ${
-                  activeSection === 'solutions' 
-                    ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
+                  activePage === 'solutions' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
                     : 'golden-shimmer-btn'
                 }`}
                 id="navlink-solutions"
               >
                 <span>Solutions</span>
                 <ChevronDown className="w-3 h-3 ml-1 text-[#061638]" />
-              </a>
+              </button>
 
               {/* Mega Dropdown Menu */}
               {solutionsDropdownOpen && (
@@ -277,23 +280,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
                       <p className="text-xs text-gray-300 mt-0.5">Architectures for Higher Education, Governance & Enterprises</p>
                     </div>
                     <button 
-                      onClick={() => onOpenLeadModal('demo')}
+                      onClick={() => {
+                        setSolutionsDropdownOpen(false);
+                        onNavigatePage('solutions');
+                      }}
                       className="text-xs font-bold text-[#FFD000] hover:text-white flex items-center uppercase tracking-wider"
-                      id="dropdown-book-demo-btn"
+                      id="dropdown-view-all-solutions-btn"
                     >
-                      Book Full Demo <ArrowRight className="w-3.5 h-3.5 ml-1.5 text-[#FFD000]" />
+                      View All Solutions <ArrowRight className="w-3.5 h-3.5 ml-1.5 text-[#FFD000]" />
                     </button>
                   </div>
 
                   {SOLUTION_CATEGORIES.map((cat) => (
-                    <a
+                    <button
                       key={cat.id}
-                      href={`#solutions`}
                       onClick={() => {
                         onSelectSolution(cat.id);
+                        onNavigatePage('solutions');
                         setSolutionsDropdownOpen(false);
                       }}
-                      className="flex items-start p-3 rounded-xl hover:bg-white/10 transition-colors group/item border border-transparent hover:border-amber-400/30"
+                      className="flex items-start p-3 rounded-xl hover:bg-white/10 transition-colors group/item border border-transparent hover:border-amber-400/30 text-left"
                     >
                       <div className="p-2 rounded-lg bg-amber-400/10 text-[#FFD000] group-hover/item:bg-[#FFD000] group-hover/item:text-[#061638] transition-all mr-3 mt-0.5">
                         {getCategoryIcon(cat.icon)}
@@ -304,136 +310,83 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
                         </div>
                         <p className="text-[11px] text-gray-400 mt-0.5 line-clamp-1">{cat.tagline}</p>
                       </div>
-                    </a>
+                    </button>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Industries Dropdown */}
-            <div 
-              className="relative"
-              onMouseEnter={() => setIndustriesDropdownOpen(true)}
-              onMouseLeave={() => setIndustriesDropdownOpen(false)}
-            >
-              <a 
-                href="#industries" 
-                className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all inline-flex items-center whitespace-nowrap ${
-                  activeSection === 'industries' 
-                    ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
-                    : 'golden-shimmer-btn'
-                }`}
-                id="navlink-industries"
-              >
-                <span>Industries</span>
-                <ChevronDown className="w-3 h-3 ml-1 text-[#061638]" />
-              </a>
-
-              {industriesDropdownOpen && (
-                <div className="absolute left-0 mt-1 w-64 bg-[#070e22]/95 backdrop-blur-2xl rounded-xl shadow-2xl border border-amber-400/30 p-3 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150 z-50">
-                  <a href="#industries" className="flex items-center p-2.5 rounded-lg hover:bg-white/10 text-xs font-bold text-gray-200 hover:text-[#FFD000] uppercase tracking-wider">
-                    <GraduationCap className="w-4 h-4 mr-2.5 text-[#FFD000]" />
-                    Higher Education & Colleges
-                  </a>
-                  <a href="#industries" className="flex items-center p-2.5 rounded-lg hover:bg-white/10 text-xs font-bold text-gray-200 hover:text-[#FFD000] uppercase tracking-wider">
-                    <Building2 className="w-4 h-4 mr-2.5 text-[#FFD000]" />
-                    Government & Autonomous
-                  </a>
-                  <a href="#industries" className="flex items-center p-2.5 rounded-lg hover:bg-white/10 text-xs font-bold text-gray-200 hover:text-[#FFD000] uppercase tracking-wider">
-                    <Briefcase className="w-4 h-4 mr-2.5 text-[#FFD000]" />
-                    Enterprises & SMEs
-                  </a>
-                  <a href="#industries" className="flex items-center p-2.5 rounded-lg hover:bg-white/10 text-xs font-bold text-gray-200 hover:text-[#FFD000] uppercase tracking-wider">
-                    <Sparkles className="w-4 h-4 mr-2.5 text-[#FFD000]" />
-                    Communities & Shrines
-                  </a>
-                </div>
-              )}
-            </div>
-
-            <a 
-              href="#case-studies" 
+            <button 
+              onClick={() => onNavigatePage('social-impact')} 
               className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
-                activeSection === 'case-studies' 
-                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
+                activePage === 'social-impact' 
+                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
                   : 'golden-shimmer-btn'
               }`}
-              id="navlink-case-studies"
+              id="navlink-social-impact"
             >
-              Case Studies
-            </a>
+              Social Impact
+            </button>
 
-            <a 
-              href="#recommender" 
+            <button 
+              onClick={() => onNavigatePage('projects')} 
               className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
-                activeSection === 'recommender' 
-                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
+                activePage === 'projects' 
+                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
                   : 'golden-shimmer-btn'
               }`}
-              id="navlink-recommender"
+              id="navlink-projects"
             >
-              Finder
-            </a>
+              Projects
+            </button>
 
-            <a 
-              href="#calculator" 
+            <button 
+              onClick={() => onNavigatePage('events-news')} 
               className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
-                activeSection === 'calculator' 
-                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
+                activePage === 'events-news' 
+                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
                   : 'golden-shimmer-btn'
               }`}
-              id="navlink-calculator"
+              id="navlink-events-news"
             >
-              ROI Impact
-            </a>
+              Events & News
+            </button>
 
-            <a 
-              href="#b2g" 
+            <button 
+              onClick={() => onNavigatePage('videos')} 
               className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
-                activeSection === 'b2g' 
-                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
+                activePage === 'videos' 
+                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
                   : 'golden-shimmer-btn'
               }`}
-              id="navlink-b2g"
+              id="navlink-videos"
             >
-              B2G
-            </a>
+              Videos
+            </button>
 
-            <a 
-              href="#resources" 
+            <button 
+              onClick={() => onNavigatePage('photos')} 
               className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
-                activeSection === 'resources' 
-                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
+                activePage === 'photos' 
+                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
                   : 'golden-shimmer-btn'
               }`}
-              id="navlink-resources"
+              id="navlink-photos"
             >
-              Resources
-            </a>
+              Photos
+            </button>
 
-            <a 
-              href="#about" 
+            <button 
+              onClick={() => onNavigatePage('contact-us')} 
               className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
-                activeSection === 'about' 
-                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
+                activePage === 'contact-us' 
+                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105 shadow-md' 
                   : 'golden-shimmer-btn'
               }`}
-              id="navlink-about"
+              id="navlink-contact-us"
             >
-              About
-            </a>
-
-            <a 
-              href="#contact" 
-              className={`px-2.5 py-1 text-[11px] uppercase tracking-wider font-black rounded-lg transition-all whitespace-nowrap ${
-                activeSection === 'contact' 
-                  ? 'golden-shimmer-btn golden-shimmer-btn-active scale-105' 
-                  : 'golden-shimmer-btn'
-              }`}
-              id="navlink-contact"
-            >
-              Contact
-            </a>
+              Contact Us
+            </button>
 
             {/* Official Portals Dropdown */}
             <div 
@@ -527,24 +480,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
             </div>
           </div>
 
-          {/* Action CTAs: Bold Golden Buttons with High Contrast */}
-          <div className="hidden lg:flex items-center space-x-2.5 shrink-0">
+          {/* Action CTAs: Bold Golden Buttons matching image */}
+          <div className="hidden lg:flex items-center space-x-2 shrink-0">
             <button
               onClick={() => onOpenLeadModal('quotation')}
-              className="px-3.5 py-2 text-xs font-black golden-shimmer-btn rounded-xl transition-all shadow"
+              className="px-3 py-1 text-[11px] font-black uppercase tracking-wider golden-shimmer-btn rounded-lg transition-all shadow whitespace-nowrap"
               id="navbar-get-quote-btn"
             >
               Quotation
             </button>
             <button
               onClick={() => onOpenLeadModal('demo')}
-              className="group flex items-center space-x-2 golden-shimmer-btn pl-4 pr-1.5 py-1.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow"
+              className="group flex items-center space-x-1.5 golden-shimmer-btn px-3 py-1 rounded-lg font-black text-[11px] uppercase tracking-wider transition-all shadow whitespace-nowrap"
               id="navbar-request-demo-btn"
             >
-              <span>Demo</span>
-              <div className="w-6 h-6 rounded-lg bg-[#061638] text-[#FFD000] flex items-center justify-center transition-colors">
-                <ArrowRight className="w-3.5 h-3.5" />
-              </div>
+              <span>DEMO</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#061638] group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
 
@@ -617,76 +568,116 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
             </div>
 
             <div className="grid grid-cols-2 gap-2 pt-1">
-              <a 
-                href="#home" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2.5 text-center text-xs uppercase tracking-wider font-black golden-shimmer-btn rounded-lg"
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('home'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg transition-all ${
+                  activePage === 'home' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
               >
                 Home
-              </a>
-              <a 
-                href="#solutions" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2.5 text-center text-xs uppercase tracking-wider font-black golden-shimmer-btn rounded-lg"
+              </button>
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('about-us'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg transition-all ${
+                  activePage === 'about-us' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
+              >
+                About Us
+              </button>
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('corporate'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg transition-all ${
+                  activePage === 'corporate' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
+              >
+                Corporate
+              </button>
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('business-with-us'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg transition-all ${
+                  activePage === 'business-with-us' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
+              >
+                Business With Us
+              </button>
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('solutions'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg transition-all ${
+                  activePage === 'solutions' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
               >
                 Solutions
-              </a>
-              <a 
-                href="#industries" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2.5 text-center text-xs uppercase tracking-wider font-black golden-shimmer-btn rounded-lg"
+              </button>
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('social-impact'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg transition-all ${
+                  activePage === 'social-impact' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
               >
-                Industries
-              </a>
-              <a 
-                href="#case-studies" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2.5 text-center text-xs uppercase tracking-wider font-black golden-shimmer-btn rounded-lg"
+                Social Impact
+              </button>
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('projects'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg transition-all ${
+                  activePage === 'projects' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
               >
-                Case Studies
-              </a>
-              <a 
-                href="#recommender" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2.5 text-center text-xs uppercase tracking-wider font-black golden-shimmer-btn rounded-lg"
+                Projects
+              </button>
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('events-news'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg transition-all ${
+                  activePage === 'events-news' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
               >
-                Finder
-              </a>
-              <a 
-                href="#calculator" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2.5 text-center text-xs uppercase tracking-wider font-black golden-shimmer-btn rounded-lg"
+                Events & News
+              </button>
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('videos'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg transition-all ${
+                  activePage === 'videos' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
               >
-                ROI Impact
-              </a>
-              <a 
-                href="#b2g" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2.5 text-center text-xs uppercase tracking-wider font-black golden-shimmer-btn rounded-lg"
+                Videos
+              </button>
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('photos'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg transition-all ${
+                  activePage === 'photos' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
               >
-                B2G
-              </a>
-              <a 
-                href="#resources" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2.5 text-center text-xs uppercase tracking-wider font-black golden-shimmer-btn rounded-lg"
+                Photos
+              </button>
+              <button 
+                onClick={() => { setMobileMenuOpen(false); onNavigatePage('contact-us'); }}
+                className={`p-2.5 text-center text-xs uppercase tracking-wider font-black rounded-lg col-span-2 transition-all ${
+                  activePage === 'contact-us' 
+                    ? 'golden-shimmer-btn golden-shimmer-btn-active bg-[#FFD000] text-[#061638]' 
+                    : 'golden-shimmer-btn'
+                }`}
               >
-                Resources
-              </a>
-              <a 
-                href="#about" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2.5 text-center text-xs uppercase tracking-wider font-black golden-shimmer-btn rounded-lg"
-              >
-                About
-              </a>
-              <a 
-                href="#contact" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="block p-2.5 text-center text-xs uppercase tracking-wider font-black golden-shimmer-btn rounded-lg"
-              >
-                Contact
-              </a>
+                Contact Us
+              </button>
             </div>
 
             <div className="pt-3 border-t border-white/10 flex flex-col space-y-2">
@@ -714,6 +705,61 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLeadModal, onSelectSolutio
           </div>
         )}
       </nav>
+
+      {/* Line 3: Official Websites Strip - Positioned directly below Main Navbar as per user image */}
+      <div className="bg-[#040817]/95 backdrop-blur-md border-b border-amber-500/20 py-2 px-4 text-center hidden md:block font-mono shadow-md">
+        <div className="max-w-[1440px] mx-auto flex flex-col items-center justify-center gap-1.5">
+          <div className="flex items-center justify-center space-x-1.5 text-[#FFD000] font-black text-[10.5px] uppercase tracking-[0.25em]">
+            <Globe className="w-3.5 h-3.5 text-[#FFD000]" />
+            <span>OFFICIAL WEBSITES:</span>
+          </div>
+          <div className="flex items-center justify-center flex-wrap gap-2.5 sm:gap-3 text-[11px]">
+            <a
+              href="https://online.samnvya.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="golden-shimmer-btn px-3.5 py-1 text-[11px] font-bold rounded-lg group shadow-md flex items-center"
+              title="Samnvya Online Cloud ERP Portal"
+            >
+              <span>https://online.samnvya.com/</span>
+              <ExternalLink className="w-3.5 h-3.5 ml-1.5 text-[#061638] group-hover:scale-110 transition-transform" />
+            </a>
+
+            <a
+              href="https://thekhyati.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="golden-shimmer-btn px-3.5 py-1 text-[11px] font-bold rounded-lg group shadow-md flex items-center"
+              title="The Khyati Institutional & Alumni Network"
+            >
+              <span>https://thekhyati.com/</span>
+              <ExternalLink className="w-3.5 h-3.5 ml-1.5 text-[#061638] group-hover:scale-110 transition-transform" />
+            </a>
+
+            <a
+              href="https://samnvya.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="golden-shimmer-btn px-3.5 py-1 text-[11px] font-bold rounded-lg group shadow-md flex items-center"
+              title="SAMNVYA IMS Corporate Website"
+            >
+              <span>https://samnvya.com/</span>
+              <ExternalLink className="w-3.5 h-3.5 ml-1.5 text-[#061638] group-hover:scale-110 transition-transform" />
+            </a>
+
+            <a
+              href="https://samnvya.com/test/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="golden-shimmer-btn px-3.5 py-1 text-[11px] font-bold rounded-lg group shadow-md flex items-center"
+              title="Samnvya Testing & Sandbox Portal"
+            >
+              <span>https://samnvya.com/test/</span>
+              <ExternalLink className="w-3.5 h-3.5 ml-1.5 text-[#061638] group-hover:scale-110 transition-transform" />
+            </a>
+          </div>
+        </div>
+      </div>
     </header>
   );
 };

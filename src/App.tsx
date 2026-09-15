@@ -1,26 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { SchemaMarkup } from './components/SchemaMarkup';
 import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { SolutionsSection } from './components/SolutionsSection';
-import { SolutionDetailModal } from './components/SolutionDetailModal';
-import { SolutionRecommender } from './components/SolutionRecommender';
-import { IndustriesSection } from './components/IndustriesSection';
-import { CaseStudiesSection } from './components/CaseStudiesSection';
-import { B2GSection } from './components/B2GSection';
-import { RoiCalculator } from './components/RoiCalculator';
-import { InnovationSection } from './components/InnovationSection';
-import { ResourcesSection } from './components/ResourcesSection';
-import { AboutSection } from './components/AboutSection';
-import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { LeadModal } from './components/LeadModal';
+import { SolutionDetailModal } from './components/SolutionDetailModal';
 import { TechBackground, TechTheme } from './components/TechBackground';
-import { SolutionModule } from './types';
-import { DETAILED_SOLUTIONS } from './data/solutionsData';
+import { PageId, SolutionModule } from './types';
+
+// Multi-Page Views
+import { HomePage } from './pages/HomePage';
+import { AboutUsPage } from './pages/AboutUsPage';
+import { CorporatePage } from './pages/CorporatePage';
+import { BusinessWithUsPage } from './pages/BusinessWithUsPage';
+import { SolutionsPage } from './pages/SolutionsPage';
+import { IndustriesPage } from './pages/IndustriesPage';
+import { SocialImpactPage } from './pages/SocialImpactPage';
+import { ProjectsPage } from './pages/ProjectsPage';
+import { EventsNewsPage } from './pages/EventsNewsPage';
+import { OpportunitiesPage } from './pages/OpportunitiesPage';
+import { VideosPage } from './pages/VideosPage';
+import { PhotosPage } from './pages/PhotosPage';
+import { ContactUsPage } from './pages/ContactUsPage';
 
 export function App() {
   const [techTheme, setTechTheme] = useState<TechTheme>('cyber');
+  const [currentPage, setCurrentPage] = useState<PageId>('home');
   const [leadModalOpen, setLeadModalOpen] = useState(false);
   const [leadModalType, setLeadModalType] = useState<'demo' | 'quotation' | 'consultation' | 'brochure'>('demo');
   const [leadModalSolution, setLeadModalSolution] = useState<string>('Samnvya Institutional ERP');
@@ -38,23 +42,45 @@ export function App() {
     setLeadModalOpen(true);
   };
 
+  const handleNavigatePage = (page: PageId) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleSelectSolution = (categoryId: string) => {
     setActiveCategoryId(categoryId);
-    const element = document.getElementById('solutions');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    if (currentPage === 'home') {
+      const element = document.getElementById('solutions');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      setCurrentPage('solutions');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const handleScrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    if (currentPage !== 'home') {
+      setCurrentPage('home');
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
-  // Observe active section on scroll
+  // Observe active section on scroll when on home page
   useEffect(() => {
+    if (currentPage !== 'home') return;
+
     const handleScroll = () => {
       const sections = ['home', 'solutions', 'industries', 'case-studies', 'recommender', 'calculator', 'b2g', 'resources', 'about', 'contact'];
       const scrollPosition = window.scrollY + 200;
@@ -74,7 +100,7 @@ export function App() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [currentPage]);
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent text-white selection:bg-[#F27D26] selection:text-white relative overflow-x-hidden">
@@ -87,86 +113,127 @@ export function App() {
       {/* Structured SEO Schema Markup */}
       <SchemaMarkup />
 
-      {/* Corporate Sticky Navbar */}
+      {/* Corporate Sticky Navbar (Preserved seamlessly across all pages with official portals strip) */}
       <Navbar
         onOpenLeadModal={handleOpenLeadModal}
         onSelectSolution={handleSelectSolution}
         activeSection={activeSection}
+        activePage={currentPage}
+        onNavigatePage={handleNavigatePage}
       />
 
-      {/* Main Content Sections */}
+      {/* Main Multi-Page Content Area */}
       <main className="flex-grow relative z-10">
-        {/* 1. Hero Section */}
-        <Hero
-          onOpenLeadModal={handleOpenLeadModal}
-          onScrollToSection={handleScrollToSection}
-        />
+        {currentPage === 'home' && (
+          <HomePage
+            onOpenLeadModal={handleOpenLeadModal}
+            onScrollToSection={handleScrollToSection}
+            onSelectSolutionDetail={(sol) => setSelectedSolutionDetail(sol)}
+            activeCategoryId={activeCategoryId}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
 
-        {/* 2. Solutions Section (7 Core Verticals & Detailed Modules) */}
-        <SolutionsSection
-          onSelectSolutionDetail={(sol) => setSelectedSolutionDetail(sol)}
-          onOpenLeadModal={handleOpenLeadModal}
-          activeCategoryId={activeCategoryId}
-        />
+        {currentPage === 'about-us' && (
+          <AboutUsPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
 
-        {/* 3. Interactive Solution Finder / Recommender Wizard */}
-        <SolutionRecommender
-          onOpenLeadModal={handleOpenLeadModal}
-        />
+        {currentPage === 'corporate' && (
+          <CorporatePage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
 
-        {/* 4. Domain-Specialized Industries */}
-        <IndustriesSection
-          onOpenLeadModal={handleOpenLeadModal}
-          onScrollToSection={handleScrollToSection}
-        />
+        {currentPage === 'business-with-us' && (
+          <BusinessWithUsPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
 
-        {/* 5. Institutional Case Studies & Experience */}
-        <CaseStudiesSection
-          onOpenLeadModal={handleOpenLeadModal}
-        />
+        {currentPage === 'solutions' && (
+          <SolutionsPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
 
-        {/* 6. Government & Institutional Readiness (B2G) */}
-        <B2GSection
-          onOpenLeadModal={handleOpenLeadModal}
-        />
+        {currentPage === 'industries' && (
+          <IndustriesPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
 
-        {/* 7. Interactive ROI & Digitization Impact Calculator */}
-        <RoiCalculator
-          onOpenLeadModal={handleOpenLeadModal}
-        />
+        {currentPage === 'social-impact' && (
+          <SocialImpactPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
 
-        {/* 8. Applied Intelligence & Technology Roadmap */}
-        <InnovationSection />
+        {currentPage === 'projects' && (
+          <ProjectsPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
 
-        {/* 9. Resources, Brochures, News & Thought Leadership */}
-        <ResourcesSection
-          onOpenLeadModal={handleOpenLeadModal}
-        />
+        {currentPage === 'events-news' && (
+          <EventsNewsPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
 
-        {/* 10. About SAMNVYA, Philosophy & Jaipur Headquarters */}
-        <AboutSection
-          onOpenLeadModal={handleOpenLeadModal}
-        />
+        {currentPage === 'opportunities' && (
+          <OpportunitiesPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
 
-        {/* 11. Final Contact & Inquiry Desk */}
-        <ContactSection
-          onOpenLeadModal={handleOpenLeadModal}
-        />
+        {currentPage === 'videos' && (
+          <VideosPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
+
+        {currentPage === 'photos' && (
+          <PhotosPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
+
+        {currentPage === 'contact-us' && (
+          <ContactUsPage
+            onOpenLeadModal={handleOpenLeadModal}
+            onNavigatePage={handleNavigatePage}
+          />
+        )}
       </main>
 
-      {/* Corporate Footer */}
+      {/* Corporate Footer (Preserved across all pages) */}
       <Footer
         onOpenLeadModal={handleOpenLeadModal}
         onSelectSolution={handleSelectSolution}
+        onNavigatePage={handleNavigatePage}
       />
 
-      {/* Modals */}
+      {/* Interactive Detail Modal */}
       <SolutionDetailModal
         solution={selectedSolutionDetail}
         onClose={() => setSelectedSolutionDetail(null)}
         onOpenLeadModal={handleOpenLeadModal}
       />
 
+      {/* Quotation / Demo / Inquiry Modal */}
       <LeadModal
         isOpen={leadModalOpen}
         onClose={() => setLeadModalOpen(false)}

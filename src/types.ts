@@ -1,3 +1,18 @@
+export type PageId = 
+  | 'home' 
+  | 'about-us' 
+  | 'solutions' 
+  | 'industries' 
+  | 'corporate' 
+  | 'social-impact' 
+  | 'business-with-us' 
+  | 'opportunities' 
+  | 'projects' 
+  | 'events-news' 
+  | 'videos' 
+  | 'photos' 
+  | 'contact-us';
+
 export interface SolutionModule {
   id: string;
   name: string;
